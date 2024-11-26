@@ -39,8 +39,8 @@ sh 'mvn package'
                 script {
                 
                     sh 'mvn test'
-                
-                archiveArtifacts artifacts: '**/target/game-of-life-*.jar', fingerprint: true
+                }
+                archiveArtifacts artifacts: '**/target/game-of-life-*.jar'
                 junit testResults: '**/target/surefire/TEST-*.xml'
             }
         }
