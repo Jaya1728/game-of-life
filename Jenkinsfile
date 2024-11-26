@@ -27,24 +27,21 @@ pipeline {
         stage('Build and Package') {
             steps {
                 script {
-                    // Using the selected Maven goal
-                    def mvnCommand = "mvn clean ${params.MAVEN_GOAL}"
-                    sh mvnCommand
+                    
+sh 'mvn package'
                 }
             }
         }
 
         stage('Test') {
-            when {
-                expression { params.MAVEN_GOAL == 'test' }
-            }
+           
             steps {
                 script {
-                    // Run tests and collect results
+                
                     sh 'mvn test'
                 }
                 archiveArtifacts artifacts: '**/target/game-of-life-*.jar', fingerprint: true
-                junit testResults: '**/target/surefire-reports/TEST-*.xml'
+                junit testResults: '**/target/surefire/TEST-*.xml'
             }
         }
     }
