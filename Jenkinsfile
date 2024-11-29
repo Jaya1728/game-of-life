@@ -8,15 +8,13 @@ pipeline {
     triggers {
         cron('H */4 * * 1-5')
     }
+  parameters {
+        choice(name: 'MAVEN_GOAL', choices: ['validate', 'package', 'test'], description: 'Select the Maven goal to execute')
+    }
 
     tools {
         jdk 'JDK_8'
     }
-
-    parameters {
-        choice(name: 'MAVEN_GOAL', choices: ['validate', 'package', 'test'], description: 'Select the Maven goal to execute')
-    }
-
     stages {
         stage('Checkout Code') {
             steps {
@@ -27,7 +25,7 @@ pipeline {
         stage('Build and Package') {
             steps {
                 
-     sh script : "mvn ${params.MAVEN_GOAL}"
+     sh script : " MAVEN_GOAL : ${params.MAVEN_GOAL} "
                 }
             }
         
