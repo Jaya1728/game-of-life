@@ -8,13 +8,15 @@ pipeline {
     triggers {
         cron('H */4 * * 1-5')
     }
-  parameters {
+
+    parameters {
         choice(name: 'MAVEN_GOAL', choices: ['validate', 'package', 'test'], description: 'Select the Maven goal to execute')
     }
 
     tools {
         jdk 'JDK_8'
     }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -24,32 +26,39 @@ pipeline {
 
         stage('Build and Package') {
             steps {
-                
-     sh script : " MAVEN_GOAL : ${params.MAVEN_GOAL} "
+                script {
+                    // Run the selected Maven goal
+                    sh "mvn clean ${params.MAVEN_GOAL}"
                 }
             }
-        
+        }
 
         stage('Test') {
-           
+            when {
+                expression { params.MAVEN_GOAL == 'test' }
+            }
             steps {
-            
-                archiveArtifacts artifacts: '**/target/game-of-life-*.jar',
-                junit testResults: '**/target/surefire/TEST-*.xml'
+                archiveArtifacts artifacts: '**/target/game-of-life-*.jar', fingerprint: true
+                junit testResults: '**/target/surefire-reports/TEST-*.xml'
             }
         }
     }
- post {
-    success {
-        mail subject : "your project is success"
-        body         : "perfectly my project was build"
-        to           : "sai@hi.com"
+
+    post {
+        success {
+            mail(
+                to: 'sai@hi.com',
+                subject: 'Build Success',
+                body: 'Perfectly, my project was built successfully.'
+            )
+        }
+
+        failure {
+            mail(
+                to: 'sai@hi.com',
+                subject: 'Build Failure',
+                body: 'The project failed to build due to errors.'
+            )
+        }
     }
- failure {
-        mail subject : "your project is failure"
-        body         : "my project was not build due to errors "
-        to           : "sai@hi.com"
-    }
- 
- }
 }
