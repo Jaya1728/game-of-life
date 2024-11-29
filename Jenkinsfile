@@ -14,7 +14,7 @@ pipeline {
     }
 
     parameters {
-        choice(name: 'MAVEN_GOAL', choices: ['validate', 'package', 'test'], description: 'Select the Maven goal to execute')
+        choice(name: 'GOAL', choices: ['validate', 'package', 'test'], description: 'Select the Maven goal to execute')
     }
 
     stages {
@@ -26,23 +26,32 @@ pipeline {
 
         stage('Build and Package') {
             steps {
-                script {
-                    
-sh 'mvn package'
+                
+     sh script : "GOAL: ${params.GOAL}"
                 }
             }
-        }
+        
 
         stage('Test') {
            
             steps {
-                script {
-                
-                    sh 'mvn test'
-                }
-                archiveArtifacts artifacts: '**/target/game-of-life-*.jar'
+              
+                archiveArtifacts artifacts: '**/target/game-of-life-*.jar',
                 junit testResults: '**/target/surefire/TEST-*.xml'
             }
         }
     }
+ post {
+    success {
+        mail subject : "your project is success"
+        body         : "perfectly my project was build"
+        to           : "sai@hi.com"
+    }
+ failure {
+        mail subject : "your project is failure"
+        body         : "my project was not build due to errors "
+        to           : "sai@hi.com"
+    }
+ 
+ }
 }
