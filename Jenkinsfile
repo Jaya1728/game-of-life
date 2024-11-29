@@ -48,7 +48,7 @@ pipeline {
             mail(
                 to: 'sai@hi.com',
                 subject: 'Build Success',
-                body: 'Perfectly, my project was built successfully.'
+                body: 'Perfectly, my project job name :${JOB_NAME} and build id : ${BUILD_ID}was built successfully.'
             )
         }
 
@@ -56,7 +56,7 @@ pipeline {
             mail(
                 to: 'sai@hi.com',
                 subject: 'Build Failure',
-                body: 'The project failed to build due to errors.'
+                body: 'The project job name :${JOB_NAME} and build id : ${BUILD_ID} failed to build due to errors.'
             )
         }
     }
