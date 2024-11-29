@@ -34,12 +34,10 @@ pipeline {
         }
 
         stage('Test') {
-            when {
-                expression { params.MAVEN_GOAL == 'test' }
-            }
+          
             steps {
-                archiveArtifacts artifacts: 'target/*.jar'
-                junit testResults: '**/target/surefire-reports/TEST-*.xml'
+                archiveArtifacts artifacts: '**/target/*.war'
+                junit testResults: '**/gameoflife-web/target/surefire-reports/TEST-*.xml'
             }
         }
     }
