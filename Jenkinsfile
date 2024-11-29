@@ -38,7 +38,7 @@ pipeline {
                 expression { params.MAVEN_GOAL == 'test' }
             }
             steps {
-                archiveArtifacts artifacts: '**/target/game-of-life-*.jar', fingerprint: true
+                archiveArtifacts artifacts: 'target/*.jar'
                 junit testResults: '**/target/surefire-reports/TEST-*.xml'
             }
         }
