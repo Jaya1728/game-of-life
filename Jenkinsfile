@@ -39,7 +39,7 @@ pipeline {
             )
         }
     }
-        }
+        
 
         stage('Build and Package') {
             steps {
@@ -64,9 +64,8 @@ pipeline {
                 body: 'The project failed to build due to errors.'
             )
         }
-    }
-        }
-
+    
+             }
         stage('Test') {
           
             steps {
@@ -109,5 +108,7 @@ pipeline {
                 body: 'The project failed to build due to errors.'
             )
         }
+    }
+}
     }
 }
