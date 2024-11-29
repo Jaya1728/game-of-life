@@ -22,6 +22,23 @@ pipeline {
             steps {
                 git url: 'https://github.com/Jaya1728/game-of-life.git', branch: 'master'
             }
+             post {
+        success {
+            mail(
+                to: 'sai@hi.com',
+                subject: 'Build Success',
+                body: 'Perfectly, my project was built successfully.'
+            )
+        }
+
+        failure {
+            mail(
+                to: 'sai@hi.com',
+                subject: 'Build Failure',
+                body: 'The project failed to build due to errors.'
+            )
+        }
+    }
         }
 
         stage('Build and Package') {
@@ -31,6 +48,23 @@ pipeline {
                     sh "mvn clean ${params.MAVEN_GOAL}"
                 }
             }
+             post {
+        success {
+            mail(
+                to: 'sai@hi.com',
+                subject: 'Build Success',
+                body: 'Perfectly, my project was built successfully.'
+            )
+        }
+
+        failure {
+            mail(
+                to: 'sai@hi.com',
+                subject: 'Build Failure',
+                body: 'The project failed to build due to errors.'
+            )
+        }
+    }
         }
 
         stage('Test') {
@@ -40,6 +74,23 @@ pipeline {
                 junit testResults: '**/gameoflife-web/target/surefire-reports/TEST-*.xml'
             }
         }
+         post {
+        success {
+            mail(
+                to: 'sai@hi.com',
+                subject: 'Build Success',
+                body: 'Perfectly, my project was built successfully.'
+            )
+        }
+
+        failure {
+            mail(
+                to: 'sai@hi.com',
+                subject: 'Build Failure',
+                body: 'The project failed to build due to errors.'
+            )
+        }
+    }
     }
 
     post {
