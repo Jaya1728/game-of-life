@@ -14,7 +14,7 @@ pipeline {
     }
 
     parameters {
-        choice(name: 'GOAL', choices: ['validate', 'package', 'test'], description: 'Select the Maven goal to execute')
+        choice(name: 'MAVEN_GOAL', choices: ['validate', 'package', 'test'], description: 'Select the Maven goal to execute')
     }
 
     stages {
@@ -27,7 +27,7 @@ pipeline {
         stage('Build and Package') {
             steps {
                 
-     sh script : "GOAL: ${params.GOAL}"
+     sh script : "mvn ${params.MAVEN_GOAL}"
                 }
             }
         
@@ -35,7 +35,7 @@ pipeline {
         stage('Test') {
            
             steps {
-              
+            
                 archiveArtifacts artifacts: '**/target/game-of-life-*.jar',
                 junit testResults: '**/target/surefire/TEST-*.xml'
             }
